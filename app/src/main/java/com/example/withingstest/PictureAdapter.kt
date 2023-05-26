@@ -6,7 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.withingstest.databinding.ItemPictureBinding
 
-class PictureAdapter(private val pictures: List<Picture>) : RecyclerView.Adapter<PictureAdapter.PictureViewHolder>() {
+class PictureAdapter(private val callback: (Picture) -> Unit) : RecyclerView.Adapter<PictureAdapter.PictureViewHolder>() {
+
+    private val pictures = mutableListOf<Picture>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PictureViewHolder {
         val binding = ItemPictureBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -16,11 +18,20 @@ class PictureAdapter(private val pictures: List<Picture>) : RecyclerView.Adapter
     override fun onBindViewHolder(holder: PictureViewHolder, position: Int) {
         val picture = pictures[position]
         holder.bind(picture)
+        holder.itemView.setOnClickListener {
+            callback(picture)
+        }
     }
 
 
     override fun getItemCount(): Int {
         return pictures.size
+    }
+
+    fun setPictures(pictures: List<Picture>) {
+        this.pictures.clear()
+        this.pictures.addAll(pictures)
+        notifyDataSetChanged()
     }
 
     inner class PictureViewHolder(private val binding: ItemPictureBinding) : RecyclerView.ViewHolder(binding.root){
