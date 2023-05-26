@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.withingstest.databinding.ItemPictureBinding
 
-class PictureAdapter(private val callback: (Picture) -> Unit) : RecyclerView.Adapter<PictureAdapter.PictureViewHolder>() {
+class PictureAdapter(private val onItemClickListener: (Picture) -> Unit) : RecyclerView.Adapter<PictureAdapter.PictureViewHolder>() {
 
     private val pictures = mutableListOf<Picture>()
 
@@ -19,7 +19,7 @@ class PictureAdapter(private val callback: (Picture) -> Unit) : RecyclerView.Ada
         val picture = pictures[position]
         holder.bind(picture)
         holder.itemView.setOnClickListener {
-            callback(picture)
+            onItemClickListener.invoke(picture)
         }
     }
 

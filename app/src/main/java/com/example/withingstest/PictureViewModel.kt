@@ -13,10 +13,10 @@ class PictureViewModel(private val repository: PictureRepository):ViewModel() {
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> = _error
 
-    fun searchPictures(query: String) {
+    fun searchPictures(query: String , imageType: String) {
         viewModelScope.launch {
             try {
-                val result = repository.searchImages(query)
+                val result = repository.searchPictures(query , imageType)
                 _picture.value = result
             } catch (e: Exception) {
                 _error.value = "Failed to search images: ${e.message}"
