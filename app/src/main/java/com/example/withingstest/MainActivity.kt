@@ -1,5 +1,6 @@
 package com.example.withingstest
 
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.withingstest.databinding.ActivityMainBinding
+import java.net.URLEncoder
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: PictureViewModel
@@ -28,22 +30,20 @@ class MainActivity : AppCompatActivity() {
         binding.imageRecyclerView.adapter = adapter
         val service = RetrofitClient.createPixabayService()
         val repository = PictureRepository(service)
-         viewModelFactory = PictureViewModelFactory(repository)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(PictureViewModel::class.java)
+        viewModelFactory = PictureViewModelFactory(repository)
+        viewModel = ViewModelProvider(this, viewModelFactory)[PictureViewModel::class.java]
         viewModel.pictures.observe(this, Observer { images ->
             adapter.setPictures(images)
             adapter.notifyDataSetChanged()
             // Affichage des résultats dans la console
             for (image in images) {
-                Log.d("MainActivity", "Image ID: ${image.id}, Image URL: ${image.pictureUrl}")
+                Log.d("MY-TAG", "Image ID: ${image.id}, Image URL: ${image.imageUrl}")
             }
         })
 
         binding.searchButton.setOnClickListener {
             val query = binding.searchEditText.text.toString()
-            val imageType = "photo"
-
-            viewModel.searchPictures(query , imageType)
+            viewModel.searchPictures(query)
         }
        /* binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {

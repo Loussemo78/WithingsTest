@@ -1,12 +1,15 @@
 package com.example.withingstest
 
+import android.net.Uri
+
 class PictureRepository(private val service: PixabayService) {
 
-    suspend fun searchPictures(query: String , imageType:String): List<Picture> {
-        val response = service.searchPictures(query = query , imageType = imageType)
+    suspend fun searchPictures(query: String): List<ImageResponse> {
+        val encodedQuery = Uri.encode(query)
+        val response = service.searchPictures(query = encodedQuery)
         if (response.isSuccessful) {
             val imageResponses = response.body()?.hits ?: emptyList()
-            return imageResponses.map { Picture(it.id, it.imageUrl) }
+            return imageResponses.map { ImageResponse(it.id, it.imageUrl) }
         }
         throw Exception("Failed to search images")
     }

@@ -7,22 +7,29 @@ import retrofit2.http.Header
 import retrofit2.http.Query
 
 interface PixabayService {
+
+    companion object {
+        const val API_KEY = "36785429-1ca911719f61f6ba9c51085a7"
+    }
+
     @GET("/api/")
     suspend fun searchPictures(
-        @Header("Authorization") apiKey: String = "18021445-326cf5bcd3658777a9d22df6f",
+        @Query("key")apiKey: String = API_KEY,
         @Query("q") query: String,
-        @Query("image_type") imageType: String = "photo"
     ): Response<SearchResponse>
 }
 
 data class SearchResponse(
+    @SerializedName("total")
     val total: Int,
     @SerializedName("totalHits")
     val totalHits: Int,
+    @SerializedName("hits")
     val hits: List<ImageResponse>
 )
 
 data class ImageResponse(
+    @SerializedName("id")
     val id: Int,
     @SerializedName("webformatURL")
     val imageUrl: String

@@ -7,16 +7,16 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
 class PictureViewModel(private val repository: PictureRepository):ViewModel() {
-    private val _picture = MutableLiveData<List<Picture>>()
-    val pictures: LiveData<List<Picture>> = _picture
+    private val _picture = MutableLiveData<List<ImageResponse>>()
+    val pictures: LiveData<List<ImageResponse>> = _picture
 
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> = _error
 
-    fun searchPictures(query: String , imageType: String) {
+    fun searchPictures(query: String) {
         viewModelScope.launch {
             try {
-                val result = repository.searchPictures(query , imageType)
+                val result = repository.searchPictures(query)
                 _picture.value = result
             } catch (e: Exception) {
                 _error.value = "Failed to search images: ${e.message}"
