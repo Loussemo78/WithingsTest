@@ -19,7 +19,12 @@ class PictureAdapter(private val onItemClickListener: (ImageResponse) -> Unit) :
     override fun onBindViewHolder(holder: PictureViewHolder, position: Int) {
         val picture = pictures[position]
         holder.bind(picture)
+
+        val isSelected = pictures.contains(picture)
+        holder.itemView.isActivated = isSelected
+
         holder.itemView.setOnClickListener {
+            toggleImageSelection(picture)
             onItemClickListener.invoke(picture)
         }
     }
@@ -36,6 +41,21 @@ class PictureAdapter(private val onItemClickListener: (ImageResponse) -> Unit) :
         diffResult.dispatchUpdatesTo(this)
         //notifyDataSetChanged()
     }
+
+    private fun toggleImageSelection(image: ImageResponse) {
+        if (pictures.contains(image)) {
+            pictures.remove(image)
+        } else {
+            pictures.add(image)
+        }
+        notifyDataSetChanged()
+    }
+
+    fun getSelectedImages(): List<ImageResponse> {
+        return pictures
+    }
+
+
 
     inner class PictureViewHolder(private val binding: ItemPictureBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(picture: ImageResponse) {

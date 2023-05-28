@@ -25,6 +25,15 @@
         android:text="Rechercher"
         tools:ignore="HardcodedText" />
 
+    <Button
+        android:id="@+id/viewSelectionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Voir la sélection"
+        android:layout_gravity="end"
+        tools:ignore="HardcodedText" />
+
+
     <!-- <SearchView
          android:id="@+id/searchView"
          android:layout_width="match_parent"

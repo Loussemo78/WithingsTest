@@ -1,5 +1,6 @@
 package com.example.withingstest
 
+import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -17,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModelFactory: PictureViewModelFactory
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: PictureAdapter
+    private val selectedImages = mutableListOf<ImageResponse>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,6 +28,12 @@ class MainActivity : AppCompatActivity() {
         binding.imageRecyclerView.layoutManager = LinearLayoutManager(this)
         adapter = PictureAdapter{
             Toast.makeText(this, "Image ID: ${it.id}", Toast.LENGTH_SHORT).show()
+            if (selectedImages.contains(it)) {
+                selectedImages.remove(it)
+            } else {
+                selectedImages.add(it)
+            }
+
         }
         binding.imageRecyclerView.adapter = adapter
         val service = RetrofitClient.createPixabayService()
@@ -44,6 +52,17 @@ class MainActivity : AppCompatActivity() {
         binding.searchButton.setOnClickListener {
             val query = binding.searchEditText.text.toString()
             viewModel.searchPictures(query)
+        }
+
+        binding.viewSelectionButton.setOnClickListener{
+            val selectedPictures = adapter.getSelectedImages()
+            if (selectedPictures.size >= 2){
+                val intent = Intent(this, SelectedPicturesActivity::class.java)
+                intent.putExtra("SELECTED_IMAGES", ArrayList(selectedPictures))
+                startActivity(intent)
+            }else{
+                Toast.makeText(this, "Please select at least 2 images", Toast.LENGTH_SHORT).show()
+            }
         }
        /* binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {

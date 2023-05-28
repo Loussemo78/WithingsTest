@@ -1,6 +1,8 @@
 package com.example.withingstest
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -19,6 +21,7 @@ interface PixabayService {
     ): Response<SearchResponse>
 }
 
+@Parcelize
 data class SearchResponse(
     @SerializedName("total")
     val total: Int,
@@ -26,11 +29,12 @@ data class SearchResponse(
     val totalHits: Int,
     @SerializedName("hits")
     val hits: List<ImageResponse>
-)
+):Parcelable
 
+@Parcelize
 data class ImageResponse(
     @SerializedName("id")
     val id: Int,
     @SerializedName("webformatURL")
     val imageUrl: String
-)
+):Parcelable
