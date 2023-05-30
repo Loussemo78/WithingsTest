@@ -25,7 +25,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //init recyclerview
         binding.imageRecyclerView.layoutManager = LinearLayoutManager(this)
+
+        //init adapter
         adapter = PictureAdapter{
             Toast.makeText(this, "Image ID: ${it.id}", Toast.LENGTH_SHORT).show()
             if (selectedImages.contains(it)) {
@@ -36,10 +40,15 @@ class MainActivity : AppCompatActivity() {
 
         }
         binding.imageRecyclerView.adapter = adapter
+
+
         val service = RetrofitClient.createPixabayService()
         val repository = PictureRepository(service)
+
+        //init view model
         viewModelFactory = PictureViewModelFactory(repository)
         viewModel = ViewModelProvider(this, viewModelFactory)[PictureViewModel::class.java]
+
         viewModel.pictures.observe(this, Observer { images ->
             adapter.setPictures(images)
             adapter.notifyDataSetChanged()
@@ -49,11 +58,14 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        // click on search button
         binding.searchButton.setOnClickListener {
             val query = binding.searchEditText.text.toString()
             viewModel.searchPictures(query)
         }
 
+
+        // click on selection view button
         binding.viewSelectionButton.setOnClickListener{
             val selectedPictures = adapter.getSelectedImages()
             if (selectedPictures.size >= 2){

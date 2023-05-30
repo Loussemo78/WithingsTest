@@ -42,6 +42,7 @@ class PictureAdapter(private val onItemClickListener: (ImageResponse) -> Unit) :
         //notifyDataSetChanged()
     }
 
+    //handle image selected
     private fun toggleImageSelection(image: ImageResponse) {
         if (pictures.contains(image)) {
             pictures.remove(image)

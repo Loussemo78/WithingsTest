@@ -5,6 +5,7 @@ import android.net.Uri
 class PictureRepository(private val service: PixabayService) {
 
     suspend fun searchPictures(query: String): List<ImageResponse> {
+        //image need to be encode according documentation
         val encodedQuery = Uri.encode(query)
         val response = service.searchPictures(query = encodedQuery)
         if (response.isSuccessful) {

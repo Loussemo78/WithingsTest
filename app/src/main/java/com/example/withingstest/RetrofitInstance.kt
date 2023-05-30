@@ -15,7 +15,6 @@ object RetrofitClient {
                 val originalRequest = chain.request()
                 val originalHttpUrl = originalRequest.url
 
-                // Ajouter la clé d'authentification aux paramètres de requête
                 val url = originalHttpUrl.newBuilder()
                     .addQueryParameter("key", API_KEY)
                     .build()
